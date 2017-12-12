@@ -142,6 +142,7 @@
     <ClCompile Include="WinMate.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.h" />
     <ClInclude Include="EntryButton.h">
       <FileType>CppForm</FileType>
     </ClInclude>

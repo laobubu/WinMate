@@ -28,7 +28,9 @@ namespace HookWatcher {
 		HINSTANCE appInstance = GetModuleHandle(NULL);
 		winhook = SetWindowsHookEx(WH_MOUSE_LL, winhook_func, appInstance, 0);
 
+#if _DEBUG
 		Console::WriteLine("Hook {0}", (int)winhook);
+#endif
 	}
 
 	static void Stop() {

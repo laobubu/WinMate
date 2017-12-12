@@ -53,10 +53,21 @@
     <ClInclude Include="ModInfo.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinMate.rc">
       <Filter>Resource</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EntryButton.resx">
+      <Filter>Resource</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <Filter>Resource</Filter>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

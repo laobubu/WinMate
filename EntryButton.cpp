@@ -12,8 +12,6 @@ WinMate::EntryButton::EntryButton(void)
 {
 	InitializeComponent();
 
-	m_AllModInfo = gcnew Dictionary<IntPtr, ModInfo^>;
-
 	wwatch = gcnew WindowWatch();
 	wwatch->RectChanged += gcnew WindowWatch::RectChangedEventHandler(this, &EntryButton::OnTargetResize);
 	wwatch->ForegroundChanged += gcnew WindowWatch::ForegroundChangedEventHandler(this, &EntryButton::OnForegroundChanged);
@@ -55,7 +53,7 @@ void WinMate::EntryButton::AttachTo(void *hWnd) {
 
 			// If the visibility shall change. use WIN32 API to change, avoid getting focus.
 			if (shall_hide)
-				SetWindowPos((HWND)m_hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_HIDEWINDOW);
+				SetWindowPos((HWND)m_hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_HIDEWINDOW);
 		}
 
 		// Change target, and OnTargetResize will be trigged
@@ -76,7 +74,9 @@ void WinMate::EntryButton::OnTargetResize(void *win, System::Drawing::Rectangle 
 	UINT flag2 = (!m_hidden && x > rect->X) ? SWP_SHOWWINDOW : SWP_HIDEWINDOW;
 	SetWindowPos(m_hWnd, HWND_TOPMOST, x, y, w, h, SWP_NOACTIVATE | flag2);
 
+#if _DEBUG
 	Console::WriteLine("Size changed. {0}, {1}, {2}", (int)win, flag2 == SWP_SHOWWINDOW, m_hidden);
+#endif
 }
 
 System::Void WinMate::EntryButton::menuTopmost_Click(System::Object ^ sender, System::EventArgs ^ e) {
@@ -92,6 +92,9 @@ void WinMate::EntryButton::OnForegroundChanged(void *win)
 	m_hovering = (win == m_hWnd);
 	if (m_hovering) return;
 
+#if _DEBUG
 	Console::WriteLine("ATTACH TO {0}", (int)win);
+#endif
+
 	this->AttachTo(win);
 }

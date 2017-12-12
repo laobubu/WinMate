@@ -25,4 +25,7 @@ namespace WinMate {
 		};
 
 	};
+
+	System::Collections::Generic::Dictionary<System::IntPtr, ModInfo^> ^ GetModInfoDict();
+	void CleanInvalidModInfo();
 }

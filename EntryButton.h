@@ -43,7 +43,6 @@ namespace WinMate {
 	private:
 		Bitmap ^ imgNormal;
 		Bitmap ^ imgHover;
-		Dictionary<IntPtr, ModInfo^> ^ m_AllModInfo;
 		ModInfo ^ m_modInfo;		// current ModInfo
 
 	protected:
@@ -123,7 +122,11 @@ namespace WinMate {
 		System::Void menuTopmost_Click(System::Object^  sender, System::EventArgs^  e);
 		System::Void EntryButton_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			IntPtr key(m_target);
-			if (!m_AllModInfo->ContainsKey(key)) m_AllModInfo->Add(key, gcnew ModInfo(m_target));
+			auto m_AllModInfo = GetModInfoDict();
+
+			if (!m_AllModInfo->ContainsKey(key)) {
+				m_AllModInfo->Add(key, gcnew ModInfo(m_target));
+			}
 			
 			m_modInfo = m_AllModInfo[key];
 			m_modInfo->DisplayTo(this);
