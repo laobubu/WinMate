@@ -25,9 +25,9 @@ namespace WinMate {
 		EntryButton(void);
 
 	public:
-		HWND m_target;
-		HWND m_target_temp;
-		HWND m_hWnd;
+		HWND m_target;		// Current manipulating target hWnd
+		HWND m_hWnd;		// EntryButton self window hWnd
+		bool m_hovering;	// If cursor is hovering on EntryButton, or the contentMenu
 		bool m_hidden;
 		WindowWatch^ wwatch;
 
@@ -111,7 +111,8 @@ namespace WinMate {
 #pragma endregion
 
 	private:
-		void OnTargetResize(void *win, System::Drawing::Rectangle ^rect); 
+		void OnTargetResize(void *win, System::Drawing::Rectangle ^rect);
+		void OnForegroundChanged(void *win);
 
 		System::Void EntryButton_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
 			alphaFx->SetImage(imgHover);

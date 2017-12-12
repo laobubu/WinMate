@@ -15,7 +15,8 @@ WinMate::EntryButton::EntryButton(void)
 	m_AllModInfo = gcnew Dictionary<IntPtr, ModInfo^>;
 
 	wwatch = gcnew WindowWatch();
-	wwatch->OnRectChanged += gcnew WindowWatch::RectChangedEventHandler(this, &EntryButton::OnTargetResize);
+	wwatch->RectChanged += gcnew WindowWatch::RectChangedEventHandler(this, &EntryButton::OnTargetResize);
+	wwatch->ForegroundChanged += gcnew WindowWatch::ForegroundChangedEventHandler(this, &EntryButton::OnForegroundChanged);
 
 	m_hWnd = (HWND)Handle.ToPointer();
 	m_hidden = false;
@@ -36,37 +37,36 @@ WinMate::EntryButton::EntryButton(void)
 	alphaFx->SetImage(imgNormal);
 }
 
+/// Attach EntryButton to a window. Make sure the hWnd is not a button.
 void WinMate::EntryButton::AttachTo(void *hWnd) {
 	HWND current = static_cast<HWND>(hWnd);
-	
-	while (current && current != m_hWnd && (GetWindowLong(current, GWL_STYLE) & WS_CAPTION) != WS_CAPTION) current = GetParent(current);
-
-	// make sure we use the outest window, not a button or textbox
-	HWND parent;
-	while (parent = GetParent(current)) current = parent;
 
 	bool caught_self = current == m_hWnd;
 	if (current) {
-		if (caught_self) current = nullptr; // do not attach self
-		if ((GetWindowLong(current, GWL_STYLE) & WS_CAPTION) != WS_CAPTION) current = nullptr; // do not attach titlebar-less window
+		if ((GetWindowLong(current, GWL_STYLE) & WS_CAPTION) != WS_CAPTION) current = NULL; // do not attach titlebar-less window
 	}
 
-	if (m_target_temp != current) {
-		wwatch->SetTarget(current);
-		m_target_temp = current;
-		if (current) m_target = current;
+	if (m_target != current) {
+		m_target = current;
 
-		if (!caught_self && m_hidden != (current == nullptr)) {
-			// the visibility shall change. use WIN32 API to change, avoid getting focus.
-			UINT flag2 = m_hidden ? SWP_SHOWWINDOW : SWP_HIDEWINDOW;
-			SetWindowPos((HWND)m_hWnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | flag2);
-			m_hidden = !m_hidden;
+		bool shall_hide = (current == NULL);
+		if (m_hidden != shall_hide) {
+			m_hidden = shall_hide;
+
+			// If the visibility shall change. use WIN32 API to change, avoid getting focus.
+			if (shall_hide)
+				SetWindowPos((HWND)m_hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_HIDEWINDOW);
 		}
+
+		// Change target, and OnTargetResize will be trigged
+		wwatch->SetTarget(current);
 	}
 }
 
 void WinMate::EntryButton::OnTargetResize(void *win, System::Drawing::Rectangle ^rect)
 {
+	if (m_hovering) return;
+
 	int x, y, w, h;
 	w = alphaFx->width;
 	h = alphaFx->height;
@@ -75,11 +75,23 @@ void WinMate::EntryButton::OnTargetResize(void *win, System::Drawing::Rectangle 
 
 	UINT flag2 = (!m_hidden && x > rect->X) ? SWP_SHOWWINDOW : SWP_HIDEWINDOW;
 	SetWindowPos(m_hWnd, HWND_TOPMOST, x, y, w, h, SWP_NOACTIVATE | flag2);
+
+	Console::WriteLine("Size changed. {0}, {1}, {2}", (int)win, flag2 == SWP_SHOWWINDOW, m_hidden);
 }
 
 System::Void WinMate::EntryButton::menuTopmost_Click(System::Object ^ sender, System::EventArgs ^ e) {
 	menuTopmost->Checked = !menuTopmost->Checked;
 	m_modInfo->Topmost = menuTopmost->Checked;
 	
-	SetWindowPos(m_hWnd,HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOMOVE);
+	SetWindowPos(m_hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOMOVE);
+}
+
+
+void WinMate::EntryButton::OnForegroundChanged(void *win)
+{
+	m_hovering = (win == m_hWnd);
+	if (m_hovering) return;
+
+	Console::WriteLine("ATTACH TO {0}", (int)win);
+	this->AttachTo(win);
 }

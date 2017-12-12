@@ -4,14 +4,5 @@
 #include <Windows.h>
 #pragma comment(lib, "user32.lib")
 
+using namespace WinMate;
 using namespace System;
-
-System::Void WinMate::MainForm::button1_Click(System::Object ^ sender, System::EventArgs ^ e) {
-	HWND win = GetForegroundWindow();
-	entryBtn->AttachTo(win);
-}
-
-System::Void WinMate::MainForm::tmrAutoAttach_Tick(System::Object ^ sender, System::EventArgs ^ e) {
-	HWND win = GetForegroundWindow();
-	entryBtn->AttachTo(win);
-}

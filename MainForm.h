@@ -39,7 +39,7 @@ namespace WinMate {
 			}
 		}
 	private: System::Windows::Forms::Button^  button1;
-	private: System::Windows::Forms::Timer^  tmrAutoAttach;
+
 	private: System::ComponentModel::IContainer^  components;
 	protected:
 
@@ -56,9 +56,7 @@ namespace WinMate {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->tmrAutoAttach = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SuspendLayout();
 			// 
 			// button1
@@ -69,12 +67,6 @@ namespace WinMate {
 			this->button1->TabIndex = 0;
 			this->button1->Text = L"button1";
 			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &MainForm::button1_Click);
-			// 
-			// tmrAutoAttach
-			// 
-			this->tmrAutoAttach->Enabled = true;
-			this->tmrAutoAttach->Tick += gcnew System::EventHandler(this, &MainForm::tmrAutoAttach_Tick);
 			// 
 			// MainForm
 			// 
@@ -90,7 +82,5 @@ namespace WinMate {
 #pragma endregion
 	private: 
 		EntryButton ^entryBtn;
-		System::Void button1_Click(System::Object^  sender, System::EventArgs^  e);
-		System::Void tmrAutoAttach_Tick(System::Object^  sender, System::EventArgs^  e);
 	};
 }
