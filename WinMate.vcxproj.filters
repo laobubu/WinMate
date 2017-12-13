@@ -75,5 +75,13 @@
     <EmbeddedResource Include="MainForm.resx">
       <Filter>Resource</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="ModToolbox.resx">
+      <Filter>Resource</Filter>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="default1.bin">
+      <Filter>Resource</Filter>
+    </None>
   </ItemGroup>
 </Project>

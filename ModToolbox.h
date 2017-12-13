@@ -109,12 +109,11 @@ namespace WinMate {
 			this->Controls->Add(this->alphaTrackBar);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->topmost);
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;
 			this->Name = L"ModToolbox";
 			this->ShowIcon = false;
 			this->ShowInTaskbar = false;
 			this->SizeGripStyle = System::Windows::Forms::SizeGripStyle::Hide;
-			this->Text = L"ModToolbox";
 			this->TopMost = true;
 			this->Deactivate += gcnew System::EventHandler(this, &ModToolbox::ModToolbox_Leave);
 			this->Leave += gcnew System::EventHandler(this, &ModToolbox::ModToolbox_Leave);

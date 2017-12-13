@@ -94,6 +94,9 @@
       <AdditionalDependencies />
       <SubSystem>Console</SubSystem>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>WinMate.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -105,6 +108,9 @@
       <AdditionalDependencies />
       <SubSystem>Console</SubSystem>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>WinMate.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -115,6 +121,9 @@
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>WinMate.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -125,6 +134,9 @@
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>WinMate.manifest</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -171,6 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinMate.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="default1.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

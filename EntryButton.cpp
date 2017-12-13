@@ -39,11 +39,15 @@ WinMate::EntryButton::EntryButton(void)
 /// Attach EntryButton to a window. Make sure the hWnd is not a button.
 void WinMate::EntryButton::AttachTo(void *hWnd) {
 	HWND current = static_cast<HWND>(hWnd);
+	LONG wstyle = 0;
 
 	bool caught_self = current == m_hWnd;
 	if (current) {
-		if ((GetWindowLong(current, GWL_STYLE) & WS_CAPTION) != WS_CAPTION) current = NULL; // do not attach titlebar-less window
+		wstyle = GetWindowLong(current, GWL_STYLE);
+		if ((wstyle & WS_CAPTION) != WS_CAPTION) current = NULL; // do not attach titlebar-less window
 	}
+
+	m_btnXoffset = (wstyle & (WS_MAXIMIZEBOX | WS_MINIMIZEBOX)) ? 145 : 45;
 
 	if (m_target != current) {
 		m_target = current;
@@ -69,7 +73,7 @@ void WinMate::EntryButton::OnTargetResize(void *win, System::Drawing::Rectangle 
 	int x, y, w, h;
 	w = alphaFx->width;
 	h = alphaFx->height;
-	x = rect->Right - 145 - w;
+	x = rect->Right - m_btnXoffset - w;
 	y = rect->Y + 1;
 
 	UINT flag2 = (!m_hidden && x > rect->X) ? SWP_SHOWWINDOW : SWP_HIDEWINDOW;

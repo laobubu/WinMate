@@ -44,6 +44,8 @@ namespace WinMate {
 		Bitmap ^ imgHover;
 		ModInfo ^ m_modInfo;		// current ModInfo
 
+		int m_btnXoffset;			// EntryButton.X = Target.Right - EntryButton.Width - m_btnXoffset
+
 	protected:
 		~EntryButton()
 		{
