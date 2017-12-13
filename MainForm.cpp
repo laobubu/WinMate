@@ -6,6 +6,8 @@
 
 using namespace WinMate;
 using namespace System;
+using namespace System::Drawing;
+using namespace System::Resources;
 
 System::Void WinMate::MainForm::MainForm_Load(System::Object ^ sender, System::EventArgs ^ e) {
 	notifyIcon->Icon = this->Icon;

@@ -146,6 +146,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="EntryButton.cpp" />
     <ClCompile Include="LayeredFormUtil.cpp" />
     <ClCompile Include="MainForm.cpp" />
@@ -186,6 +187,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="default1.bin" />
+    <None Include="design\alternat.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Design\Icon.ico" />
+    <Image Include="UI\hover.png" />
+    <Image Include="UI\normal.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

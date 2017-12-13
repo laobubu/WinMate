@@ -3,6 +3,8 @@
 #include <vcclr.h>
 #include <cassert>
 
+#include "resource.h"
+
 #ifdef _DEBUG 
 #define LOG(...) System::Console::WriteLine( __VA_ARGS__ )
 
@@ -17,3 +19,9 @@
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "gdi32.lib")
 #endif
+
+namespace WinMate{
+	using namespace System;
+	using namespace System::Drawing;
+	Image ^ LoadFileOrResource(String ^ fileName, const TCHAR* resType, int resID);
+}

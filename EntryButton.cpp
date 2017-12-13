@@ -21,16 +21,8 @@ WinMate::EntryButton::EntryButton(void)
 	m_hidden = false;
 
 	// make this window transparent
-	{
-		FileStream ^stream = gcnew FileStream("UI/normal.png", FileMode::Open, FileAccess::Read);
-		imgNormal = gcnew Bitmap(Image::FromStream(stream));
-		stream->Close();
-	}
-	{
-		FileStream ^stream = gcnew FileStream("UI/hover.png", FileMode::Open, FileAccess::Read);
-		imgHover = gcnew Bitmap(Image::FromStream(stream));
-		stream->Close();
-	}
+	imgNormal = gcnew Bitmap(WinMate::LoadFileOrResource("UI/normal.png", L"PNG", IDB_PNG_NORMAL));
+	imgHover = gcnew Bitmap(WinMate::LoadFileOrResource("UI/hover.png", L"PNG", IDB_PNG_HOVER));
 
 	alphaFx = gcnew LayeredFormUtil(this);
 	alphaFx->SetImage(imgNormal);
