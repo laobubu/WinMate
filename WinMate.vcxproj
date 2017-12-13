@@ -138,6 +138,7 @@
     <ClCompile Include="LayeredFormUtil.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="ModInfo.cpp" />
+    <ClCompile Include="ModToolbox.cpp" />
     <ClCompile Include="WindowWatch.cpp" />
     <ClCompile Include="WinMate.cpp" />
   </ItemGroup>
@@ -151,6 +152,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="ModInfo.h" />
+    <ClInclude Include="ModToolbox.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="WindowWatch.h" />
   </ItemGroup>
@@ -160,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModToolbox.resx">
+      <DependentUpon>ModToolbox.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

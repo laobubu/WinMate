@@ -1,14 +1,12 @@
+#define USE_WIN32_API
 #include "ModInfo.h"
-#include "EntryButton.h"
+#include "ModToolbox.h"
 #include "Common.h"
-
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#pragma comment(lib, "user32.lib")
 
 using namespace WinMate;
 using namespace System;
 using namespace System::Collections;
+using namespace System::Collections::Generic;
 using namespace System::Runtime::InteropServices;
 
 namespace WinMate {
@@ -18,15 +16,14 @@ namespace WinMate {
 	{
 		LOG(L"Start clean invalid ModInfo...");
 		auto dict = GetModInfoDict();
-		auto keys = dict->Keys;
-		for (int i = 0; i<keys->Count; i++)
+		array<IntPtr> ^ keys = gcnew array<IntPtr>(dict->Count);
+		dict->Keys->CopyTo(keys, 0);
+		for each (IntPtr key in keys)
 		{
-			IntPtr key = keys[i];
 			HWND hWnd = (HWND)key.ToPointer();
 			if (!IsWindow(hWnd)) {
 				LOG(L" - Clean hWnd {0}", key);
 				dict->Remove(key);
-				i--;
 			}
 		}
 	}
@@ -40,19 +37,32 @@ namespace WinMate {
 		static bool inited = false;
 		if (!inited) {
 			_dict = gcnew Dictionary<IntPtr, ModInfo^>;
-			Timer ^ purgeTimer = gcnew Timer(5e3);
+
+			// Create a timer, CleanInvalidModInfo every 20 seconds. 
+			Timer ^ purgeTimer = gcnew Timer(20e3);
 			purgeTimer->Elapsed += gcnew System::Timers::ElapsedEventHandler(&WinMate::CleanInvalidModInfo);
 			purgeTimer->Start();
+			
 			inited = true;
 		}
 		return _dict;
 	}
 }
 
-void WinMate::ModInfo::DisplayTo(EntryButton ^ ebtn) {
-	ebtn->menuTopmost->Checked = Topmost;
+void WinMate::ModInfo::DisplayTo(ModToolbox ^ box) {
+	box->topmost->Checked = _Topmost;
+	box->alphaTrackBar->Value = _Alpha;
 }
 
 void WinMate::ModInfo::ApplyTopmost(bool topmost) {
-	SetWindowPos(hWnd, topmost ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, 3);
+	SetWindowPos(hWnd, topmost ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+}
+
+void WinMate::ModInfo::ApplyAlpha(int a)
+{
+	LONG nRet = GetWindowLong(hWnd, GWL_EXSTYLE);
+	nRet = nRet | WS_EX_LAYERED;
+	SetWindowLong(hWnd, GWL_EXSTYLE, nRet);
+
+	SetLayeredWindowAttributes(hWnd, 0, 255 - a, LWA_ALPHA);
 }

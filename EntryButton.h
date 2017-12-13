@@ -3,6 +3,7 @@
 #include "WindowWatch.h"
 #include "LayeredFormUtil.h"
 #include "ModInfo.h"
+#include "ModToolbox.h"
 
 typedef struct HWND__ *HWND;
 
@@ -29,11 +30,9 @@ namespace WinMate {
 		HWND m_hWnd;		// EntryButton self window hWnd
 		bool m_hovering;	// If cursor is hovering on EntryButton, or the contentMenu
 		bool m_hidden;
-		WindowWatch^ wwatch;
 
-	public:
-		System::Windows::Forms::ContextMenuStrip^  contextMenu;
-		System::Windows::Forms::ToolStripMenuItem^  menuTopmost;
+		WindowWatch^ wwatch;
+		ModToolbox^ modBox;		// The popup containing manipulating options
 
 	public:
 		LayeredFormUtil^ alphaFx;
@@ -69,24 +68,7 @@ namespace WinMate {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
-			this->contextMenu = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
-			this->menuTopmost = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->contextMenu->SuspendLayout();
 			this->SuspendLayout();
-			// 
-			// contextMenu
-			// 
-			this->contextMenu->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->menuTopmost });
-			this->contextMenu->Name = L"contextMenu";
-			this->contextMenu->Size = System::Drawing::Size(153, 48);
-			// 
-			// menuTopmost
-			// 
-			this->menuTopmost->Name = L"menuTopmost";
-			this->menuTopmost->Size = System::Drawing::Size(152, 22);
-			this->menuTopmost->Text = L"Always on Top";
-			this->menuTopmost->Click += gcnew System::EventHandler(this, &EntryButton::menuTopmost_Click);
 			// 
 			// EntryButton
 			// 
@@ -103,7 +85,6 @@ namespace WinMate {
 			this->MouseEnter += gcnew System::EventHandler(this, &EntryButton::EntryButton_MouseEnter);
 			this->MouseLeave += gcnew System::EventHandler(this, &EntryButton::EntryButton_MouseLeave);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &EntryButton::EntryButton_MouseUp);
-			this->contextMenu->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -119,19 +100,6 @@ namespace WinMate {
 		System::Void EntryButton_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
 			alphaFx->SetImage(imgNormal);
 		}
-		System::Void menuTopmost_Click(System::Object^  sender, System::EventArgs^  e);
-		System::Void EntryButton_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-			IntPtr key(m_target);
-			auto m_AllModInfo = GetModInfoDict();
-
-			if (!m_AllModInfo->ContainsKey(key)) {
-				m_AllModInfo->Add(key, gcnew ModInfo(m_target));
-			}
-			
-			m_modInfo = m_AllModInfo[key];
-			m_modInfo->DisplayTo(this);
-			
-			contextMenu->Show(this, e->X, e->Y);
-		}
+		System::Void EntryButton_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
 };
 }

@@ -33,6 +33,9 @@
     <ClCompile Include="ModInfo.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="ModToolbox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h">
@@ -54,6 +57,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ModToolbox.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

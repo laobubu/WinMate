@@ -1,10 +1,6 @@
+#define USE_WIN32_API
 #include "WindowWatch.h"
-
-#include <cassert>
-#include <vcclr.h>
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#pragma comment(lib, "user32.lib")
+#include "Common.h"
 
 using namespace WinMate;
 using namespace System::Timers;
@@ -28,9 +24,7 @@ namespace HookWatcher {
 		HINSTANCE appInstance = GetModuleHandle(NULL);
 		winhook = SetWindowsHookEx(WH_MOUSE_LL, winhook_func, appInstance, 0);
 
-#if _DEBUG
-		Console::WriteLine("Hook {0}", (int)winhook);
-#endif
+		LOG("Hook {0}", (long)winhook);
 	}
 
 	static void Stop() {
