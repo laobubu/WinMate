@@ -43,6 +43,9 @@ namespace WinMate {
 	private: System::Windows::Forms::Button^  btnExit;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Button^  btnRunBackground;
+	private: System::Windows::Forms::ContextMenuStrip^  contextMenu;
+	private: System::Windows::Forms::ToolStripMenuItem^  menuShow;
+	private: System::Windows::Forms::ToolStripMenuItem^  menuExit;
 
 	protected:
 
@@ -70,16 +73,21 @@ namespace WinMate {
 			this->btnExit = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->btnRunBackground = (gcnew System::Windows::Forms::Button());
+			this->contextMenu = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->menuShow = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->menuExit = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			this->contextMenu->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// notifyIcon
 			// 
 			this->notifyIcon->BalloonTipIcon = System::Windows::Forms::ToolTipIcon::Info;
+			this->notifyIcon->ContextMenuStrip = this->contextMenu;
 			this->notifyIcon->Text = L"WinMate";
 			this->notifyIcon->Visible = true;
-			this->notifyIcon->BalloonTipClicked += gcnew System::EventHandler(this, &MainForm::notifyIcon_Click);
-			this->notifyIcon->Click += gcnew System::EventHandler(this, &MainForm::notifyIcon_Click);
+			this->notifyIcon->BalloonTipClicked += gcnew System::EventHandler(this, &MainForm::menuShow_Click);
+			this->notifyIcon->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainForm::notifyIcon_MouseDown);
 			// 
 			// label1
 			// 
@@ -121,6 +129,26 @@ namespace WinMate {
 			this->btnRunBackground->UseVisualStyleBackColor = true;
 			this->btnRunBackground->Click += gcnew System::EventHandler(this, &MainForm::btnRunBackground_Click);
 			// 
+			// contextMenu
+			// 
+			this->contextMenu->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) { this->menuShow, this->menuExit });
+			this->contextMenu->Name = L"contextMenu";
+			this->contextMenu->Size = System::Drawing::Size(123, 48);
+			// 
+			// menuShow
+			// 
+			this->menuShow->Name = L"menuShow";
+			this->menuShow->Size = System::Drawing::Size(122, 22);
+			this->menuShow->Text = L"&Options";
+			this->menuShow->Click += gcnew System::EventHandler(this, &MainForm::menuShow_Click);
+			// 
+			// menuExit
+			// 
+			this->menuExit->Name = L"menuExit";
+			this->menuExit->Size = System::Drawing::Size(122, 22);
+			this->menuExit->Text = L"&Exit";
+			this->menuExit->Click += gcnew System::EventHandler(this, &MainForm::btnExit_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
@@ -139,6 +167,7 @@ namespace WinMate {
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MainForm::MainForm_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			this->contextMenu->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -150,31 +179,10 @@ namespace WinMate {
 		bool hideBalloon;
 
 		System::Void MainForm_Load(System::Object^  sender, System::EventArgs^  e);
-		System::Void notifyIcon_Click(System::Object^  sender, System::EventArgs^  e) {
-			if (this->Visible) this->Hide();
-			else this->Show();
-		}
-		System::Void MainForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-			if (this->exiting) return;
-
-			if (!hideBalloon) {
-				notifyIcon->BalloonTipTitle = L"WinMate is running";
-				notifyIcon->BalloonTipText = L"To exit WinMate, click the [Exit] button.";
-				notifyIcon->ShowBalloonTip(500);
-				hideBalloon = true;
-			}
-
-			e->Cancel = true;
-			this->Hide();
-		}
-		System::Void btnExit_Click(System::Object^  sender, System::EventArgs^  e) {
-			this->exiting = true;
-			this->Close();
-		}
-		System::Void btnRunBackground_Click(System::Object^  sender, System::EventArgs^  e) {
-			this->hideBalloon = true;
-			this->exiting = false;
-			this->Close();
-		}
+		System::Void menuShow_Click(System::Object^  sender, System::EventArgs^  e);
+		System::Void MainForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e);
+		System::Void btnExit_Click(System::Object^  sender, System::EventArgs^  e);
+		System::Void btnRunBackground_Click(System::Object^  sender, System::EventArgs^  e);
+		System::Void notifyIcon_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
 };
 }
