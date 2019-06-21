@@ -11,7 +11,7 @@ enum WatchMethod {
 	WM_WM_POLL,
 	WM_WM_WINDOWS_HOOK,
 };
-const WatchMethod method = WM_WM_WINDOWS_HOOK;
+const WatchMethod method = WM_WM_POLL;
 
 
 namespace HookWatcher {

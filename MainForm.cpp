@@ -11,6 +11,11 @@ using namespace System::Resources;
 
 System::Void WinMate::MainForm::MainForm_Load(System::Object ^ sender, System::EventArgs ^ e) {
 	notifyIcon->Icon = this->Icon;
+
+	timerHide = gcnew Timer();
+	timerHide->Tick += gcnew System::EventHandler(this, &WinMate::MainForm::OnHidingTimerTick);
+	timerHide->Interval = 500;
+	timerHide->Start();
 }
 
 inline System::Void WinMate::MainForm::menuShow_Click(System::Object ^ sender, System::EventArgs ^ e) {
@@ -55,4 +60,12 @@ inline System::Void WinMate::MainForm::notifyIcon_MouseDown(System::Object ^ sen
 	else {
 		menuShow->PerformClick();
 	}
+}
+
+
+void WinMate::MainForm::OnHidingTimerTick(System::Object ^sender, System::EventArgs ^e)
+{
+	this->Hide();
+	timerHide->Stop();
+	timerHide = nullptr;
 }

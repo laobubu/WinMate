@@ -177,6 +177,7 @@ namespace WinMate {
 		EntryButton ^entryBtn;
 		bool exiting;
 		bool hideBalloon;
+		Timer ^timerHide;
 
 		System::Void MainForm_Load(System::Object^  sender, System::EventArgs^  e);
 		System::Void menuShow_Click(System::Object^  sender, System::EventArgs^  e);
@@ -184,5 +185,6 @@ namespace WinMate {
 		System::Void btnExit_Click(System::Object^  sender, System::EventArgs^  e);
 		System::Void btnRunBackground_Click(System::Object^  sender, System::EventArgs^  e);
 		System::Void notifyIcon_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
+		void OnHidingTimerTick(System::Object ^sender, System::EventArgs ^e);
 };
 }
